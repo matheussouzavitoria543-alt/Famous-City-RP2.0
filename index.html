@@ -18,79 +18,82 @@ body { background-color: #f8fafc; font-family: sans-serif; }
 
 <!-- Notification -->
 <div id="notification" class="notification fixed top-4 left-1/2 transform -translate-x-1/2 z-50 hidden">
-<div class="bg-blue-500 text-white px-6 py-3 rounded-lg shadow-lg flex items-center">
-<i data-feather="alert-circle" class="mr-2"></i>
-<span id="notification-message"></span>
-</div>
+  <div class="bg-blue-500 text-white px-6 py-3 rounded-lg shadow-lg flex items-center">
+    <i data-feather="alert-circle" class="mr-2"></i>
+    <span id="notification-message"></span>
+  </div>
 </div>
 
 <!-- Member Login -->
 <div id="memberLogin" class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
-<div class="bg-white rounded-lg p-6 w-full max-w-sm">
-<h3 class="text-xl font-bold mb-4">Identifique-se</h3>
-<input id="memberNameInput" type="text" placeholder="Digite seu nome" class="w-full border rounded p-2 mb-4">
-<button onclick="loginMember()" class="w-full bg-blue-500 text-white py-2 rounded hover:bg-blue-600">Entrar</button>
-</div>
+  <div class="bg-white rounded-lg p-6 w-full max-w-sm">
+    <h3 class="text-xl font-bold mb-4">Identifique-se</h3>
+    <input id="memberNameInput" type="text" placeholder="Digite seu nome" class="w-full border rounded p-2 mb-4">
+    <button onclick="loginMember()" class="w-full bg-blue-500 text-white py-2 rounded hover:bg-blue-600">Entrar</button>
+  </div>
 </div>
 
 <!-- Main App -->
 <div id="mainApp" class="container mx-auto px-4 py-8 hidden">
-<header class="flex justify-between items-center mb-8">
-<h1 class="text-3xl font-bold text-blue-500">Progresso em Foco</h1>
-<div class="flex space-x-4">
-<button id="settingsBtn" class="p-2 rounded-full hover:bg-gray-200">
-<i data-feather="settings"></i>
-</button>
-<button id="adminBtn" class="p-2 rounded-full hover:bg-gray-200 hidden">
-<i data-feather="shield"></i>
-</button>
-</div>
-</header>
+  <header class="flex justify-between items-center mb-8">
+    <h1 class="text-3xl font-bold text-blue-500">Progresso em Foco</h1>
+    <div class="flex space-x-4">
+      <button id="settingsBtn" class="p-2 rounded-full hover:bg-gray-200">
+        <i data-feather="settings"></i>
+      </button>
+      <button id="adminBtn" class="p-2 rounded-full hover:bg-gray-200 hidden">
+        <i data-feather="shield"></i>
+      </button>
+    </div>
+  </header>
 
-<!-- Overall Progress / Placar -->
-<div id="overallProgressContainer" class="mb-6"></div>
+  <!-- Overall Progress / Placar -->
+  <div id="overallProgressContainer" class="mb-6"></div>
 
-<!-- Add New Bar Form -->
-<div class="bg-white rounded-lg shadow p-6 mb-8">
-<h2 class="text-xl font-semibold mb-4">Adicionar Nova Meta</h2>
-<div class="flex gap-4">
-<input id="newBarName" type="text" placeholder="Nome da Meta" class="border rounded p-2 flex-1">
-<button id="addBarBtn" onclick="addNewBar()" class="bg-blue-500 text-white px-6 py-2 rounded hover:bg-blue-600">Adicionar</button>
-</div>
-</div>
+  <!-- Add New Bar Form -->
+  <div class="bg-white rounded-lg shadow p-6 mb-8">
+    <h2 class="text-xl font-semibold mb-4">Adicionar Nova Meta</h2>
+    <div class="flex gap-4">
+      <input id="newBarName" type="text" placeholder="Nome da Meta" class="border rounded p-2 flex-1">
+      <button id="addBarBtn" onclick="addNewBar()" class="bg-blue-500 text-white px-6 py-2 rounded hover:bg-blue-600">Adicionar</button>
+    </div>
+  </div>
 
-<!-- Progress Bars Container -->
-<div id="barsContainer" class="space-y-6"></div>
+  <!-- Progress Bars Container -->
+  <div id="barsContainer" class="space-y-6"></div>
 
-<!-- Settings Modal -->
-<div id="settingsModal" class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 hidden">
-<div class="bg-white rounded-xl shadow-xl p-8 w-full max-w-md">
-<div class="flex justify-between items-center mb-6 border-b pb-4">
-<h3 class="text-2xl font-bold text-gray-800">Configurações</h3>
-<button onclick="closeSettingsModal()" class="text-gray-500 hover:text-gray-700 transition-colors">
-<i data-feather="x" class="w-6 h-6"></i>
-</button>
-</div>
-<div class="space-y-4">
-<label class="block text-sm font-medium text-gray-600 mb-2">Cor das Barras</label>
-<div class="flex gap-3">
-<button onclick="changeBarColor('#3B82F6')" class="w-10 h-10 rounded-lg bg-blue-500 hover:ring-2 hover:ring-blue-300 transition-all"></button>
-<button onclick="changeBarColor('#10B981')" class="w-10 h-10 rounded-lg bg-green-500 hover:ring-2 hover:ring-green-300 transition-all"></button>
-<button onclick="changeBarColor('#F59E0B')" class="w-10 h-10 rounded-lg bg-yellow-500 hover:ring-2 hover:ring-yellow-300 transition-all"></button>
-<button onclick="changeBarColor('#EF4444')" class="w-10 h-10 rounded-lg bg-red-500 hover:ring-2 hover:ring-red-300 transition-all"></button>
-<button onclick="changeBarColor('#8B5CF6')" class="w-10 h-10 rounded-lg bg-purple-500 hover:ring-2 hover:ring-purple-300 transition-all"></button>
-</div>
-</div>
-</div>
+  <!-- Settings Modal -->
+  <div id="settingsModal" class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 hidden">
+    <div class="bg-white rounded-xl shadow-xl p-8 w-full max-w-md">
+      <div class="flex justify-between items-center mb-6 border-b pb-4">
+        <h3 class="text-2xl font-bold text-gray-800">Configurações</h3>
+        <button onclick="closeSettingsModal()" class="text-gray-500 hover:text-gray-700 transition-colors">
+          <i data-feather="x" class="w-6 h-6"></i>
+        </button>
+      </div>
+      <div class="space-y-4">
+        <label class="block text-sm font-medium text-gray-600 mb-2">Cor das Barras</label>
+        <div class="flex gap-3">
+          <button onclick="changeBarColor('#3B82F6')" class="w-10 h-10 rounded-lg bg-blue-500 hover:ring-2 hover:ring-blue-300 transition-all"></button>
+          <button onclick="changeBarColor('#10B981')" class="w-10 h-10 rounded-lg bg-green-500 hover:ring-2 hover:ring-green-300 transition-all"></button>
+          <button onclick="changeBarColor('#F59E0B')" class="w-10 h-10 rounded-lg bg-yellow-500 hover:ring-2 hover:ring-yellow-300 transition-all"></button>
+          <button onclick="changeBarColor('#EF4444')" class="w-10 h-10 rounded-lg bg-red-500 hover:ring-2 hover:ring-red-300 transition-all"></button>
+          <button onclick="changeBarColor('#8B5CF6')" class="w-10 h-10 rounded-lg bg-purple-500 hover:ring-2 hover:ring-purple-300 transition-all"></button>
+        </div>
+      </div>
+    </div>
+  </div>
+
 </div>
 
 <script>
+// Inicializar Feather Icons
+feather.replace();
+
+// Dados globais
 let bars = JSON.parse(localStorage.getItem('progressBars')) || [];
 let memberName = localStorage.getItem('memberName') || '';
 let barColor = localStorage.getItem('barColor') || '#3B82F6';
-
-// Inicializar Feather Icons
-feather.replace();
 
 // Login Member
 function loginMember(){
@@ -143,6 +146,7 @@ function renderBars(){
       </div>
       <div class="mt-2 flex gap-2">
         <input type="file" onchange="uploadProof(${index},this.files[0])" class="border rounded p-1">
+        <span class="text-sm text-gray-500">Enviar prova da tarefa</span>
       </div>
       <div class="mt-2 grid grid-cols-3 gap-2">
         ${(bar.proofs||[]).map(p=>`<img src="${p}" class="w-full h-16 object-cover rounded border">`).join('')}
@@ -208,6 +212,15 @@ function renderOverallProgress(){
   const container=document.getElementById('overallProgressContainer');
   container.innerHTML='';
   if(bars.length===0) return;
-  const sorted = [...bars].sort((a,b)=>b.progress-a.progress);
+  const sorted = [...bars].sort((a,b)=>b.progress-b.progress);
   sorted.forEach(bar=>{
-    const el=document.createElement('div
+    const el=document.createElement('div');
+    el.className='mb-2';
+    el.innerHTML=`<strong>${bar.owner}</strong>: ${bar.name} - ${bar.progress}%`;
+    container.appendChild(el);
+  });
+}
+</script>
+
+</body>
+</html>
