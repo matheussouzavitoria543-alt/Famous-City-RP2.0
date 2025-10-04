@@ -381,5 +381,30 @@ document.addEventListener('DOMContentLoaded', () => {
   if(isAdmin) document.getElementById('adminBtn').classList.remove('hidden');
 });
 </script>
+
+<!-- Firebase App (necessário) -->
+<script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
+<!-- Firebase Analytics (opcional) -->
+<script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-analytics-compat.js"></script>
+<!-- Firebase Realtime Database -->
+<script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-database-compat.js"></script>
+
+<script>
+  const firebaseConfig = {
+    apiKey: "AIzaSyDun-EEYvE7pUYtJCS7APB6J4xSD-gN0oE",
+    authDomain: "famous-city-rp.firebaseapp.com",
+    databaseURL: "https://famous-city-rp-default-rtdb.firebaseio.com",
+    projectId: "famous-city-rp",
+    storageBucket: "famous-city-rp.firebasestorage.app",
+    messagingSenderId: "938453127813",
+    appId: "1:938453127813:web:11c4e6500b3828a8bacfec",
+    measurementId: "G-BXHKSPBFTN"
+  };
+
+  // Inicializa Firebase
+  firebase.initializeApp(firebaseConfig);
+  firebase.analytics();
+  const database = firebase.database();
+</script>
 </body>
 </html>
