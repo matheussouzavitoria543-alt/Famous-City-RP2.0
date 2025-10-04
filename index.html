@@ -158,10 +158,43 @@
 feather.replace();
 
 // --- Estado + credenciais iniciais
-let bars = JSON.parse(localStorage.getItem('progressBars')) || [];
 let admins = JSON.parse(localStorage.getItem('admins')) || [{username:'admin', password:'123456'}];
-let barColor = localStorage.getItem('barColor') || '#3B82F6';
-let isAdmin = false;
+
+function saveAdmins(){ localStorage.setItem('admins', JSON.stringify(admins)); }
+
+function createAdmin(){
+  const u = document.getElementById('newAdminUser').value.trim();
+  const p = document.getElementById('newAdminPass').value.trim();
+  if(!u || !p){ alert('Preencha usuário e senha'); return; }
+  
+  // adiciona o novo admin na lista e salva no localStorage
+  admins.push({username:u, password:p});
+  saveAdmins();
+  
+  document.getElementById('newAdminUser').value='';
+  document.getElementById('newAdminPass').value='';
+  renderAdminList();
+  showNotification('Administrador criado');
+}
+
+function loginAdmin(){
+  const user = document.getElementById('adminUsername').value.trim();
+  const pass = document.getElementById('adminPassword').value.trim();
+  if(!user || !pass){ alert('Preencha usuário e senha'); return; }
+
+  const storedAdmins = JSON.parse(localStorage.getItem('admins')) || admins;
+  const found = storedAdmins.find(a => a.username === user && a.password === pass);
+
+  if(found){
+    isAdmin = true;
+    document.getElementById('adminBtn').classList.remove('hidden');
+    closeSettingsModal();
+    showNotification('Login de administrador realizado!');
+    renderAdminList();
+  } else {
+    alert('Usuário ou senha incorretos.');
+  }
+}
 
 // ---------- Helpers ----------
 function showNotification(msg){
