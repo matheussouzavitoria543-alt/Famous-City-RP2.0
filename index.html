@@ -33,34 +33,22 @@
       </button>
     </div>
     <div class="space-y-6">
-      <!-- Tema e barras -->
+      <!-- Escolher cores das barras -->
       <div>
-        <h4 class="font-semibold mb-2">Tema do Sistema</h4>
-        <div class="flex gap-3 mb-4">
-          <button onclick="changeThemeColor('#3B82F6')" class="w-10 h-10 rounded-lg bg-blue-500"></button>
-          <button onclick="changeThemeColor('#10B981')" class="w-10 h-10 rounded-lg bg-green-500"></button>
-          <button onclick="changeThemeColor('#F59E0B')" class="w-10 h-10 rounded-lg bg-yellow-500"></button>
-          <button onclick="changeThemeColor('#EF4444')" class="w-10 h-10 rounded-lg bg-red-500"></button>
-          <button onclick="changeThemeColor('#8B5CF6')" class="w-10 h-10 rounded-lg bg-purple-500"></button>
-        </div>
-        <h4 class="font-semibold mb-2">Cor das Barras</h4>
+        <h4 class="font-semibold mb-2">Tema das Barras</h4>
         <div class="flex gap-3">
-          <button onclick="changeBarColor('#3B82F6')" class="w-10 h-10 rounded-lg bg-blue-500"></button>
-          <button onclick="changeBarColor('#10B981')" class="w-10 h-10 rounded-lg bg-green-500"></button>
-          <button onclick="changeBarColor('#F59E0B')" class="w-10 h-10 rounded-lg bg-yellow-500"></button>
-          <button onclick="changeBarColor('#EF4444')" class="w-10 h-10 rounded-lg bg-red-500"></button>
-          <button onclick="changeBarColor('#8B5CF6')" class="w-10 h-10 rounded-lg bg-purple-500"></button>
+          <button onclick="changeBarColor('#3B82F6')" class="w-10 h-10 rounded-lg bg-blue-500 hover:ring-2 hover:ring-blue-300 transition-all"></button>
+          <button onclick="changeBarColor('#10B981')" class="w-10 h-10 rounded-lg bg-green-500 hover:ring-2 hover:ring-green-300 transition-all"></button>
+          <button onclick="changeBarColor('#F59E0B')" class="w-10 h-10 rounded-lg bg-yellow-500 hover:ring-2 hover:ring-yellow-300 transition-all"></button>
+          <button onclick="changeBarColor('#EF4444')" class="w-10 h-10 rounded-lg bg-red-500 hover:ring-2 hover:ring-red-300 transition-all"></button>
+          <button onclick="changeBarColor('#8B5CF6')" class="w-10 h-10 rounded-lg bg-purple-500 hover:ring-2 hover:ring-purple-300 transition-all"></button>
         </div>
       </div>
-      <!-- Login Admin -->
-      <div class="pt-4 border-t">
-        <h4 class="font-semibold mb-2">Login do Administrador</h4>
-        <div class="mb-3">
-          <input id="adminUsername" type="text" placeholder="Usuário" class="w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-blue-500">
-        </div>
-        <div class="mb-3">
-          <input id="adminPassword" type="password" placeholder="Senha" class="w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-blue-500">
-        </div>
+      <!-- Login e senha admin -->
+      <div>
+        <h4 class="font-semibold mb-2 mt-4">Login do Administrador</h4>
+        <input id="adminUsername" type="text" placeholder="Usuário" class="w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-blue-500 mb-2">
+        <input id="adminPassword" type="password" placeholder="Senha" class="w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-blue-500 mb-2">
         <button onclick="loginAdmin()" class="w-full bg-blue-500 text-white py-2 rounded hover:bg-blue-600">Entrar como Administrador</button>
       </div>
     </div>
@@ -76,12 +64,33 @@
         <i data-feather="x" class="w-6 h-6"></i>
       </button>
     </div>
-    <div class="space-y-4">
-      <h4 class="font-semibold text-lg">Gerenciar Metas</h4>
+    <div>
+      <h4 class="font-semibold text-lg">Gerenciar Metas e Mensagens</h4>
       <div id="adminBarsList" class="space-y-2"></div>
-      <h4 class="font-semibold text-lg">Mensagem Global</h4>
+      <h4 class="font-semibold text-lg mt-4">Mensagem Global</h4>
       <input type="text" id="globalMessageInput" placeholder="Mensagem para todos os membros" class="w-full px-3 py-2 border rounded-lg">
-      <button onclick="sendGlobalMessage()" class="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600">Enviar</button>
+      <button onclick="sendGlobalMessage()" class="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600 mt-2">Enviar</button>
+    </div>
+  </div>
+</div>
+
+<!-- Modal Mensagem Global -->
+<div id="globalMessageModal" class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 hidden">
+  <div class="bg-white rounded-xl shadow-2xl p-8 max-w-md w-full mx-4 relative">
+    <div class="absolute top-4 right-4">
+      <button onclick="closeGlobalMessage()" class="text-gray-500 hover:text-gray-700">
+        <i data-feather="x" class="w-6 h-6"></i>
+      </button>
+    </div>
+    <div class="flex flex-col items-center text-center">
+      <div class="w-16 h-16 bg-yellow-100 rounded-full flex items-center justify-center mb-4">
+        <i data-feather="alert-triangle" class="text-yellow-500 w-8 h-8"></i>
+      </div>
+      <h3 class="text-xl font-bold text-gray-800 mb-2">Mensagem da Moderação</h3>
+      <p id="globalMessageText" class="text-gray-600 mb-6"></p>
+      <button onclick="closeGlobalMessage()" class="px-6 py-2 bg-blue-500 text-white rounded-lg hover:bg-blue-600 transition-colors">
+        Entendi
+      </button>
     </div>
   </div>
 </div>
@@ -92,7 +101,7 @@
     <h1 class="text-3xl font-bold text-blue-500">Progresso em Foco</h1>
     <div class="flex space-x-4">
       <button onclick="openSettingsModal()" class="p-2 rounded-full hover:bg-gray-200"><i data-feather="settings"></i></button>
-      <button id="adminBtn" class="p-2 rounded-full hover:bg-gray-200 hidden"><i data-feather="shield"></i></button>
+      <button id="adminBtn" class="p-2 rounded-full hover:bg-gray-200 hidden" onclick="openAdminModal()"><i data-feather="shield"></i></button>
     </div>
   </header>
 
@@ -118,34 +127,27 @@
 <script>
 feather.replace();
 
-// Variáveis
 let bars = JSON.parse(localStorage.getItem('progressBars')) || [];
 let barColor = '#3B82F6';
 let isAdmin = false;
-let adminCredentials = {username:'admin', password:'123456'};
+const adminCredentials = {username:'admin', password:'123456'};
 
-// Funções de modal
 function openSettingsModal(){document.getElementById('settingsModal').classList.remove('hidden');}
 function closeSettingsModal(){document.getElementById('settingsModal').classList.add('hidden');}
-function openAdminModal(){if(isAdmin){document.getElementById('adminModal').classList.remove('hidden'); renderAdminBars();}else alert('Somente administradores podem acessar!');}
+function openAdminModal(){if(isAdmin){document.getElementById('adminModal').classList.remove('hidden'); renderAdminBars();} else alert('Somente administradores podem acessar!');}
 function closeAdminModal(){document.getElementById('adminModal').classList.add('hidden');}
 
-// Login admin
 function loginAdmin(){
-  const user = document.getElementById('adminUsername').value;
-  const pass = document.getElementById('adminPassword').value;
+  const user=document.getElementById('adminUsername').value;
+  const pass=document.getElementById('adminPassword').value;
   if(user===adminCredentials.username && pass===adminCredentials.password){
-    isAdmin=true; alert('Login de administrador realizado!');
+    isAdmin=true;
     document.getElementById('adminBtn').classList.remove('hidden');
     closeSettingsModal();
+    alert('Login de administrador realizado!');
   } else alert('Usuário ou senha incorretos!');
 }
 
-// Alterar cores
-function changeThemeColor(hex){document.documentElement.style.setProperty('--color-primary',hex);}
-function changeBarColor(hex){barColor=hex; renderBars();}
-
-// Adicionar Meta
 document.getElementById('addBarBtn').addEventListener('click', ()=>{
   const name=document.getElementById('newBarName').value.trim();
   if(!name){alert('Digite o nome da meta'); return;}
@@ -156,6 +158,59 @@ document.getElementById('addBarBtn').addEventListener('click', ()=>{
   renderBars(); updateLeaderboard();
 });
 
-// Renderizar Barras
 function renderBars(){
   const container=document.getElementById('barsContainer'); container.innerHTML='';
+  bars.forEach((bar,index)=>{
+    const barEl=document.createElement('div'); barEl.className='bg-white rounded-lg shadow p-6';
+    barEl.innerHTML=`
+      <div class="flex justify-between items-center mb-4">
+        <h3 class="text-lg font-semibold">${bar.name} (${bar.member})</h3>
+        <button onclick="editBarName(${index})" class="p-1 text-gray-500 hover:text-blue-500"><i data-feather="edit-2" class="w-4 h-4"></i></button>
+      </div>
+      <div class="flex items-center space-x-4 mb-2">
+        <div class="flex-1 h-4 bg-gray-200 rounded-full overflow-hidden">
+          <div class="progress-bar h-full rounded-full" style="width: ${bar.progress}%; background-color: ${barColor};"></div>
+        </div>
+        <span>${bar.progress}%</span>
+      </div>
+      <div class="flex items-center gap-2">
+        <input type="file" id="progressPhoto-${index}" accept="image/*" class="hidden" onchange="handleFileUpload(${index}, this.files[0])">
+        <label for="progressPhoto-${index}" class="cursor-pointer bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600 flex items-center gap-2">
+          <i data-feather="camera"></i> Provar Tarefa
+        </label>
+      </div>
+    `;
+    container.appendChild(barEl);
+  });
+  feather.replace();
+}
+
+function handleFileUpload(index,file){
+  if(!file) return;
+  const reader=new FileReader();
+  reader.onload=function(e){
+    bars[index].proofs.push({date:new Date().toISOString(),image:e.target.result});
+    bars[index].progress=Math.min(bars[index].progress+10,100);
+    localStorage.setItem('progressBars',JSON.stringify(bars));
+    renderBars(); updateLeaderboard();
+  };
+  reader.readAsDataURL(file);
+}
+
+function editBarName(index){
+  const newName=prompt('Novo nome da meta:',bars[index].name);
+  if(newName){bars[index].name=newName; localStorage.setItem('progressBars',JSON.stringify(bars)); renderBars(); updateLeaderboard();}
+}
+
+function updateLeaderboard(){
+  const lb=document.getElementById('leaderboard'); lb.innerHTML='';
+  bars.sort((a,b)=>b.progress-b.progress).forEach(b=>{
+    const el=document.createElement('div'); el.className='flex justify-between';
+    el.innerHTML=`<span>${b.member}</span><span>${b.progress}% - ${b.name}</span>`;
+    lb.appendChild(el);
+  });
+}
+
+function renderAdminBars(){
+  const container=document.getElementById('adminBarsList'); container.innerHTML='';
+  bars.forEach((b,i)=>{
