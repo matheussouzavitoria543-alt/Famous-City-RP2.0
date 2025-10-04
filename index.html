@@ -16,7 +16,7 @@ body { background-color: #f8fafc; font-family: sans-serif; }
 </head>
 <body class="min-h-screen">
 
-<!-- Notification -->
+<!-- Notificação -->
 <div id="notification" class="notification fixed top-4 left-1/2 transform -translate-x-1/2 z-50 hidden">
   <div class="bg-blue-500 text-white px-6 py-3 rounded-lg shadow-lg flex items-center">
     <i data-feather="alert-circle" class="mr-2"></i>
@@ -24,7 +24,7 @@ body { background-color: #f8fafc; font-family: sans-serif; }
   </div>
 </div>
 
-<!-- Member Login -->
+<!-- Login do Membro -->
 <div id="memberLogin" class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
   <div class="bg-white rounded-lg p-6 w-full max-w-sm">
     <h3 class="text-xl font-bold mb-4">Identifique-se</h3>
@@ -33,7 +33,7 @@ body { background-color: #f8fafc; font-family: sans-serif; }
   </div>
 </div>
 
-<!-- Main App -->
+<!-- Aplicativo Principal -->
 <div id="mainApp" class="container mx-auto px-4 py-8 hidden">
   <header class="flex justify-between items-center mb-8">
     <h1 class="text-3xl font-bold text-blue-500">Progresso em Foco</h1>
@@ -47,10 +47,13 @@ body { background-color: #f8fafc; font-family: sans-serif; }
     </div>
   </header>
 
-  <!-- Overall Progress / Placar -->
-  <div id="overallProgressContainer" class="mb-6"></div>
+  <!-- Placar Geral -->
+  <div id="overallProgressContainer" class="mb-6 bg-white p-4 rounded-lg shadow">
+    <h2 class="text-lg font-bold mb-2">Placar Geral</h2>
+    <div id="overallList"></div>
+  </div>
 
-  <!-- Add New Bar Form -->
+  <!-- Adicionar Nova Meta -->
   <div class="bg-white rounded-lg shadow p-6 mb-8">
     <h2 class="text-xl font-semibold mb-4">Adicionar Nova Meta</h2>
     <div class="flex gap-4">
@@ -59,35 +62,55 @@ body { background-color: #f8fafc; font-family: sans-serif; }
     </div>
   </div>
 
-  <!-- Progress Bars Container -->
+  <!-- Contêiner de Barras de Progresso -->
   <div id="barsContainer" class="space-y-6"></div>
+</div>
 
-  <!-- Settings Modal -->
-  <div id="settingsModal" class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 hidden">
-    <div class="bg-white rounded-xl shadow-xl p-8 w-full max-w-md">
-      <div class="flex justify-between items-center mb-6 border-b pb-4">
-        <h3 class="text-2xl font-bold text-gray-800">Configurações</h3>
-        <button onclick="closeSettingsModal()" class="text-gray-500 hover:text-gray-700 transition-colors">
-          <i data-feather="x" class="w-6 h-6"></i>
-        </button>
-      </div>
-      <div class="space-y-4">
-        <label class="block text-sm font-medium text-gray-600 mb-2">Cor das Barras</label>
+<!-- Modal de Configurações -->
+<div id="settingsModal" class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 hidden">
+  <div class="bg-white rounded-xl shadow-xl p-8 w-full max-w-md">
+    <div class="flex justify-between items-center mb-6 border-b pb-4">
+      <h3 class="text-2xl font-bold text-gray-800">Configurações</h3>
+      <button onclick="closeSettingsModal()" class="text-gray-500 hover:text-gray-700">
+        <i data-feather="x" class="w-6 h-6"></i>
+      </button>
+    </div>
+    <div class="space-y-4">
+      <div>
+        <h4 class="font-semibold mb-2">Cor das Barras</h4>
         <div class="flex gap-3">
-          <button onclick="changeBarColor('#3B82F6')" class="w-10 h-10 rounded-lg bg-blue-500 hover:ring-2 hover:ring-blue-300 transition-all"></button>
-          <button onclick="changeBarColor('#10B981')" class="w-10 h-10 rounded-lg bg-green-500 hover:ring-2 hover:ring-green-300 transition-all"></button>
-          <button onclick="changeBarColor('#F59E0B')" class="w-10 h-10 rounded-lg bg-yellow-500 hover:ring-2 hover:ring-yellow-300 transition-all"></button>
-          <button onclick="changeBarColor('#EF4444')" class="w-10 h-10 rounded-lg bg-red-500 hover:ring-2 hover:ring-red-300 transition-all"></button>
-          <button onclick="changeBarColor('#8B5CF6')" class="w-10 h-10 rounded-lg bg-purple-500 hover:ring-2 hover:ring-purple-300 transition-all"></button>
+          <button onclick="changeBarColor('#3B82F6')" class="w-10 h-10 rounded-lg bg-blue-500"></button>
+          <button onclick="changeBarColor('#10B981')" class="w-10 h-10 rounded-lg bg-green-500"></button>
+          <button onclick="changeBarColor('#F59E0B')" class="w-10 h-10 rounded-lg bg-yellow-500"></button>
+          <button onclick="changeBarColor('#EF4444')" class="w-10 h-10 rounded-lg bg-red-500"></button>
+          <button onclick="changeBarColor('#8B5CF6')" class="w-10 h-10 rounded-lg bg-purple-500"></button>
         </div>
+      </div>
+      <div>
+        <h4 class="font-semibold mb-2">Mensagem Global</h4>
+        <textarea id="globalMessageInput" class="w-full border rounded p-2" rows="3" placeholder="Digite a mensagem para todos"></textarea>
+        <button onclick="sendGlobalMessage()" class="mt-2 w-full bg-blue-500 text-white py-2 rounded hover:bg-blue-600">Enviar Mensagem Global</button>
       </div>
     </div>
   </div>
+</div>
 
+<!-- Mensagem Global -->
+<div id="globalMessageDisplay" class="fixed inset-0 flex items-center justify-center z-50 hidden">
+  <div class="bg-white rounded-xl shadow-2xl p-8 max-w-md w-full mx-4 relative">
+    <div class="absolute top-4 right-4">
+      <button onclick="closeGlobalMessage()" class="text-gray-500 hover:text-gray-700">
+        <i data-feather="x"></i>
+      </button>
+    </div>
+    <h3 class="text-xl font-bold text-gray-800 mb-2">Mensagem da Moderação</h3>
+    <p id="globalMessageText" class="text-gray-600 mb-6"></p>
+    <button onclick="closeGlobalMessage()" class="px-6 py-2 bg-blue-500 text-white rounded-lg hover:bg-blue-600">Entendi</button>
+  </div>
 </div>
 
 <script>
-// Inicializar Feather Icons
+// Feather icons
 feather.replace();
 
 // Dados globais
@@ -95,21 +118,19 @@ let bars = JSON.parse(localStorage.getItem('progressBars')) || [];
 let memberName = localStorage.getItem('memberName') || '';
 let barColor = localStorage.getItem('barColor') || '#3B82F6';
 
-// Login Member
+// Login de membro
 function loginMember(){
   const input = document.getElementById('memberNameInput');
-  if(input.value.trim()==='') return alert('Digite seu nome');
+  if(input.value.trim() === '') return alert('Digite seu nome');
   memberName = input.value.trim();
   localStorage.setItem('memberName', memberName);
-  document.getElementById('memberLogin').style.display='none';
+  document.getElementById('memberLogin').style.display = 'none';
   document.getElementById('mainApp').classList.remove('hidden');
   renderBars();
   renderOverallProgress();
 }
-
-// Se já está logado
 if(memberName){
-  document.getElementById('memberLogin').style.display='none';
+  document.getElementById('memberLogin').style.display = 'none';
   document.getElementById('mainApp').classList.remove('hidden');
   renderBars();
   renderOverallProgress();
@@ -123,10 +144,10 @@ function showNotification(msg){
   setTimeout(()=>el.classList.add('hidden'),3000);
 }
 
-// Renderizar Barras
+// Barras de progresso
 function renderBars(){
   const container = document.getElementById('barsContainer');
-  container.innerHTML='';
+  container.innerHTML = '';
   bars.forEach((bar,index)=>{
     const barEl = document.createElement('div');
     barEl.className='bg-white rounded-lg shadow p-6';
@@ -134,7 +155,7 @@ function renderBars(){
       <div class="flex justify-between items-center mb-4">
         <input type='text' value='${bar.name}' onchange='editBarName(${index},this.value)' class='text-lg font-semibold border-b border-gray-300'>
         <span class="text-sm text-gray-500">Criado por: ${bar.owner}</span>
-        <button onclick='removeBar(${index})' class='p-1 text-red-500 hover:text-red-700' title='Remover Meta'>
+        <button onclick='removeBar(${index})' class='p-1 text-red-500 hover:text-red-700'>
           <i data-feather='trash-2' class='w-4 h-4'></i>
         </button>
       </div>
@@ -157,10 +178,10 @@ function renderBars(){
   feather.replace();
 }
 
-// Adicionar Meta
+// Adicionar meta
 function addNewBar(){
-  const input=document.getElementById('newBarName');
-  const name=input.value.trim();
+  const input = document.getElementById('newBarName');
+  const name = input.value.trim();
   if(!name) return showNotification('Digite um nome');
   bars.push({name,progress:0,owner:memberName,proofs:[]});
   localStorage.setItem('progressBars',JSON.stringify(bars));
@@ -170,7 +191,7 @@ function addNewBar(){
   showNotification('Meta adicionada');
 }
 
-// Remover Meta
+// Remover meta
 function removeBar(index){
   bars.splice(index,1);
   localStorage.setItem('progressBars',JSON.stringify(bars));
@@ -190,10 +211,10 @@ function editBarName(index,newName){
 // Upload prova
 function uploadProof(index,file){
   if(!file) return;
-  const reader=new FileReader();
-  reader.onload=function(e){
+  const reader = new FileReader();
+  reader.onload = function(e){
     bars[index].proofs.push(e.target.result);
-    bars[index].progress=Math.min((bars[index].progress||0)+10,100);
+    bars[index].progress = Math.min((bars[index].progress||0)+10,100);
     localStorage.setItem('progressBars',JSON.stringify(bars));
     renderBars();
     renderOverallProgress();
@@ -202,25 +223,4 @@ function uploadProof(index,file){
   reader.readAsDataURL(file);
 }
 
-// Settings Modal
-document.getElementById('settingsBtn').addEventListener('click',()=>document.getElementById('settingsModal').classList.remove('hidden'));
-function closeSettingsModal(){ document.getElementById('settingsModal').classList.add('hidden'); }
-function changeBarColor(color){ barColor=color; localStorage.setItem('barColor',color); renderBars(); renderOverallProgress(); showNotification('Cor da barra alterada'); }
-
-// Placar geral
-function renderOverallProgress(){
-  const container=document.getElementById('overallProgressContainer');
-  container.innerHTML='';
-  if(bars.length===0) return;
-  const sorted = [...bars].sort((a,b)=>b.progress-b.progress);
-  sorted.forEach(bar=>{
-    const el=document.createElement('div');
-    el.className='mb-2';
-    el.innerHTML=`<strong>${bar.owner}</strong>: ${bar.name} - ${bar.progress}%`;
-    container.appendChild(el);
-  });
-}
-</script>
-
-</body>
-</html>
+// Modal configura
