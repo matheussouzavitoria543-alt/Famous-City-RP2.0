@@ -67,6 +67,25 @@
   </div>
 </div>
 
+<!-- Modal Administração -->
+<div id="adminModal" class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 hidden">
+  <div class="bg-white rounded-xl shadow-xl p-8 w-full max-w-lg">
+    <div class="flex justify-between items-center mb-6">
+      <h3 class="text-2xl font-bold">Painel de Administração</h3>
+      <button onclick="closeAdminModal()" class="text-gray-500 hover:text-gray-700">
+        <i data-feather="x" class="w-6 h-6"></i>
+      </button>
+    </div>
+    <div class="space-y-4">
+      <h4 class="font-semibold text-lg">Gerenciar Metas</h4>
+      <div id="adminBarsList" class="space-y-2"></div>
+      <h4 class="font-semibold text-lg">Mensagens Globais</h4>
+      <input type="text" id="globalMessageInput" placeholder="Mensagem para todos os membros" class="w-full px-3 py-2 border rounded-lg">
+      <button onclick="sendGlobalMessage()" class="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600">Enviar</button>
+    </div>
+  </div>
+</div>
+
 <!-- Header -->
 <div class="container mx-auto px-4 py-8">
   <header class="flex justify-between items-center mb-8">
@@ -89,16 +108,13 @@
   <!-- Placar Geral -->
   <div class="bg-white rounded-lg shadow p-6 mb-8">
     <h2 class="text-xl font-semibold mb-4">Placar Geral</h2>
-    <div id="leaderboard" class="space-y-2">
-      <!-- Ranking será preenchido dinamicamente -->
-    </div>
+    <div id="leaderboard" class="space-y-2"></div>
   </div>
 
   <!-- Barras de progresso -->
   <div id="barsContainer" class="space-y-6"></div>
 </div>
 
-<!-- Script -->
 <script>
 feather.replace();
 
@@ -109,108 +125,47 @@ let themeColor = localStorage.getItem('themeColor') || 'primary';
 let adminCredentials = {username:'admin', password:'123456'};
 let isAdmin = false;
 
-// Modal Configurações
+// Configurações modal
 function openSettingsModal(){document.getElementById('settingsModal').classList.remove('hidden');}
 function closeSettingsModal(){document.getElementById('settingsModal').classList.add('hidden');}
 
-// Login Admin
+// Admin modal
+function openAdminModal(){
+  if(isAdmin){document.getElementById('adminModal').classList.remove('hidden'); renderAdminBars();}
+  else{alert('Somente administradores podem acessar!');}
+}
+function closeAdminModal(){document.getElementById('adminModal').classList.add('hidden');}
+
+// Login admin
 function loginAdmin(){
   const user = document.getElementById('adminUsername').value;
   const pass = document.getElementById('adminPassword').value;
-  if(user === adminCredentials.username && pass === adminCredentials.password){
+  if(user===adminCredentials.username && pass===adminCredentials.password){
     alert('Login de administrador bem-sucedido!');
     document.getElementById('adminBtn').classList.remove('hidden');
-    isAdmin = true;
-    closeSettingsModal();
-  }else{
-    alert('Usuário ou senha incorretos.');
-  }
+    isAdmin=true; closeSettingsModal();
+  }else alert('Usuário ou senha incorretos.');
 }
 
 // Mudança de cores
 function changeThemeColor(color,hex){themeColor=color;document.documentElement.style.setProperty('--color-primary',hex);}
-function changeBarColor(hex){barColor=hex;document.documentElement.style.setProperty('--color-bar',hex);renderBars();}
+function changeBarColor(hex){barColor=hex;renderBars();}
 
-// Adicionar nova meta
+// Adicionar meta
 document.getElementById('addBarBtn').addEventListener('click',()=>{
-  const name = document.getElementById('newBarName').value.trim();
+  const name=document.getElementById('newBarName').value.trim();
   if(!name){alert('Digite o nome da meta');return;}
-  bars.push({name:name,progress:0,proofs:[],member:null});
+  const member=prompt('Digite seu nome para identificar suas metas','Membro')||'Membro';
+  bars.push({name:name,progress:0,proofs:[],member:member});
   localStorage.setItem('progressBars',JSON.stringify(bars));
   document.getElementById('newBarName').value='';
-  renderBars();
-  updateLeaderboard();
+  renderBars(); updateLeaderboard();
 });
 
-// Renderização das barras
+// Renderizar barras
 function renderBars(){
-  const container = document.getElementById('barsContainer');
+  const container=document.getElementById('barsContainer');
   container.innerHTML='';
   bars.forEach((bar,i)=>{
     const barEl=document.createElement('div');
-    barEl.className='bg-white rounded-lg shadow p-6';
-    barEl.innerHTML=`
-      <div class="flex justify-between items-center mb-4">
-        <h3 class="text-lg font-semibold">${bar.name}</h3>
-        <button onclick="editBarName(${i})" class="p-1 text-gray-500 hover:text-blue-500" title="Editar nome"><i data-feather="edit-2"></i></button>
-      </div>
-      <div class="flex items-center space-x-4">
-        <div class="flex-1 h-4 bg-gray-200 rounded-full overflow-hidden">
-          <div class="progress-bar h-full rounded-full" style="width:${bar.progress}%;background-color:${barColor}"></div>
-        </div>
-        <span>${bar.progress}%</span>
-      </div>
-      <div class="mt-4">
-        <label class="cursor-pointer bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600 flex items-center gap-2">
-          <i data-feather="camera"></i>
-          <span>Enviar Comprovação</span>
-          <input type="file" onchange="handleFileUpload(${i},this.files[0])" class="hidden">
-        </label>
-      </div>
-    `;
-    container.appendChild(barEl);
-  });
-  feather.replace();
-}
-
-// Editar nome da meta
-function editBarName(index){
-  const newName = prompt('Digite o novo nome da meta',bars[index].name);
-  if(newName){bars[index].name=newName;localStorage.setItem('progressBars',JSON.stringify(bars));renderBars();}
-}
-
-// Upload de prova
-function handleFileUpload(index,file){
-  if(!file) return;
-  const reader=new FileReader();
-  reader.onload=function(e){
-    bars[index].proofs.push({date:new Date().toISOString(),image:e.target.result});
-    bars[index].progress=Math.min(bars[index].progress+10,100);
-    localStorage.setItem('progressBars',JSON.stringify(bars));
-    renderBars();
-    updateLeaderboard();
-  };
-  reader.readAsDataURL(file);
-}
-
-// Placar geral
-function updateLeaderboard(){
-  const lb=document.getElementById('leaderboard');
-  lb.innerHTML='';
-  const sorted=[...bars].sort((a,b)=>b.progress-a.progress);
-  sorted.forEach(b=>{
-    const div=document.createElement('div');
-    div.className='flex justify-between bg-gray-100 p-2 rounded';
-    div.innerHTML=`<span>${b.member||'Membro'} - ${b.name}</span><span>${b.progress}%</span>`;
-    lb.appendChild(div);
-  });
-}
-
-// Inicialização
-document.addEventListener('DOMContentLoaded',()=>{
-  renderBars();
-  updateLeaderboard();
-});
-</script>
-</body>
-</html>
+    barEl.class
